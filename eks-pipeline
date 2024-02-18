@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    stages {
+        
+         
+        stage('checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/kokareamol/Devsecops-Reddit-Clone.git'
+            }
+        }
+    
+        
+        
+        stage('terraform init') {
+            steps {
+                dir('Eks-terraform') {
+                    sh 'terraform init'
+               }
+            }
+        }
+        
+        stage('terraform validate') {
+            steps {
+                dir('Eks-terraform') {
+                    sh 'terraform validate'
+               }
+            }
+        }
+        
+        
+        stage('terraform plan') {
+            steps {
+                dir('Eks-terraform') {
+                    sh 'terraform plan'
+               }
+            }
+        }
+        
+        
+        stage('terraform apply') {
+            steps {
+                dir('Eks-terraform') {
+                    sh 'terraform ${action} --auto-approve'
+               }
+            }
+        }
+        
+        
+        
+    }
+}
+
